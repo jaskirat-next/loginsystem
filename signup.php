@@ -1,3 +1,26 @@
+<?php
+if($_SERVER['REQUEST_METHOD']=="POST"){
+include 'components/dbconnect.php';
+$username = $_POST["username"];
+$password = $_POST["password"];
+$conpassword = $_POST["conpassword"];
+$set_alert = false;
+$exist = false; 
+if($password == $conpassword && $exist == false){
+$sql = "INSERT INTO `user` (`username`, `password`, `date`) VALUES ('$username', '$password', current_timestamp())";
+$result = mysqli_query($conn, $sql);
+if($result){
+    $set_alert = true;
+}
+else{
+    echo "Failed";
+}
+}
+}
+
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -11,12 +34,21 @@
 
 <body>
     <?php require 'components/_nav.php' ?>
+    <?php
+    if($set_alert){
+    echo'
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Your account is now created. Now you can login.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>';
+    }
+    ?>
     <div class="container my-4">
         <h3 style="text-align:center">Fill form for Sign up</h3>
         <form  action="/loginsystem/signup.php" method="POST">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
-                <input type="email" class="form-control" id="username" name="username" aria-describedby="emailHelp">
+                <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp">
 
             </div>
             <div class="mb-3">
