@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if($_SERVER['REQUEST_METHOD']=="POST"){
 include 'components/dbconnect.php';
 $username = $_POST["username"];
@@ -7,10 +11,12 @@ $conpassword = $_POST["conpassword"];
 $set_alert = false;
 $exist = false; 
 if($password == $conpassword && $exist == false){
-$sql = "INSERT INTO `user` (`username`, `password`, `date`) VALUES ('$username', '$password', current_timestamp())";
+$sql = "INSERT INTO `users` (`username`, `password`, `date`) VALUES ('$username', '$password', current_timestamp())";
 $result = mysqli_query($conn, $sql);
 if($result){
     $set_alert = true;
+    header("Location: signup.php?success=1");
+    exit();
 }
 else{
     echo "Failed";
@@ -18,7 +24,7 @@ else{
 }
 }
 
-
+$set_alert = isset($_GET['success']) ? true : false;
 ?>
 
 <!doctype html>
