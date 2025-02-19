@@ -47,7 +47,14 @@ $set_alert = isset($_GET['success']) ? true : false;
         <strong>Success!</strong> Your account is now created. Now you can login.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>';
+    
+    echo '<script>
+            setTimeout(function(){
+            window.location.href = "signup.php";
+            }, 3000)
+          </script>';
     }
+
     ?>
     <div class="container my-4">
         <h3 style="text-align:center">Fill form for Sign up</h3>
