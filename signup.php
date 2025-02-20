@@ -2,26 +2,38 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
+$shoerror = false;
 if($_SERVER['REQUEST_METHOD']=="POST"){
 include 'components/dbconnect.php';
 $username = $_POST["username"];
 $password = $_POST["password"];
 $conpassword = $_POST["conpassword"];
 $set_alert = false;
-$exist = false; 
-if($password == $conpassword && $exist == false){
-$sql = "INSERT INTO `users` (`username`, `password`, `date`) VALUES ('$username', '$password', current_timestamp())";
-$result = mysqli_query($conn, $sql);
-if($result){
-    $set_alert = true;
-    header("Location: signup.php?success=1");
-    exit();
+// $exist = false; 
+$existSql = "SELECT * FROM  `users` WHERE username = '$username'";
+$result = mysqli_query($conn , $existSql);
+$numRows = mysqli_num_rows($result);
+if($numRows > 0){
+    // $exist = true;
+    $shoerror = "Username already exist";
 }
 else{
-    echo "Failed";
+    // $exist = false;
+    if($password == $conpassword ){
+    $sql = "INSERT INTO `users` (`username`, `password`, `date`) VALUES ('$username', '$password', current_timestamp())";
+    $result = mysqli_query($conn, $sql);
+    if($result){
+        $set_alert = true;
+        header("Location: signup.php?success=1");
+        exit();
+    }
 }
+else{
+    $shoerror = "password not matched";
+    }
+    
 }
+
 }
 
 $set_alert = isset($_GET['success']) ? true : false;
@@ -55,7 +67,21 @@ $set_alert = isset($_GET['success']) ? true : false;
           </script>';
     }
 
-    ?>
+   if($shoerror){
+    echo'
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong>' .$shoerror.
+       ' <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>';
+
+    echo '<script>
+            setTimeout(function(){
+            window.location.href = "signup.php";
+            }, 3000)
+          </script>';
+   }
+?>
+    
     <div class="container my-4">
         <h3 style="text-align:center">Fill form for Sign up</h3>
         <form  action="/loginsystem/signup.php" method="POST">
