@@ -1,3 +1,15 @@
+
+<?php
+// session_start();
+if(isset($_SESSION['logedin']) && $_SESSION['logedin'] == true){
+  $logedin = true;
+  // exit();
+}
+else{
+  $logedin = false;
+}
+
+echo '
 <!doctype html>
 <html lang="en">
   <head>
@@ -16,18 +28,24 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/loginsystem">Home</a>
-        </li>
+          <a class="nav-link active" aria-current="page" href="/loginsystem/welcome.php">Home</a>
+        </li>';
+        if(!$logedin){
+        echo'
         <li class="nav-item">
           <a class="nav-link" href="/loginsystem/login.php">Log in</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/loginsystem/signup.php">Sign up</a>
-        </li>
+        </li>';
+        }
+        if($logedin){
+        echo'
         <li class="nav-item">
           <a class="nav-link" href="/loginsystem/logout.php">Log out</a>
-        </li>
-        
+        </li>';
+        }
+        echo'
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -38,4 +56,5 @@
 </nav>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
-</html>
+</html>';
+?>
