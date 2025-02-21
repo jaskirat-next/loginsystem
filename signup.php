@@ -20,7 +20,8 @@ if($numRows > 0){
 else{
     // $exist = false;
     if($password == $conpassword ){
-    $sql = "INSERT INTO `users` (`username`, `password`, `date`) VALUES ('$username', '$password', current_timestamp())";
+    $hash = password_hash($password , PASSWORD_DEFAULT);
+    $sql = "INSERT INTO `users` (`username`, `password`, `date`) VALUES ('$username', '$hash', current_timestamp())";
     $result = mysqli_query($conn, $sql);
     if($result){
         $set_alert = true;
